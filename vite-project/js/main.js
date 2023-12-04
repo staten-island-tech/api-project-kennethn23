@@ -1,6 +1,8 @@
 import '../css/style.css'
+import { DOMSelectors } from './dom';
+import { insertCard, insertTitle } from './inserts';
 
-const url = `https://valorant-api.com/v1/agents`;
+/*const url = `https://valorant-api.com/v1/agents`;
 
 async function getData(url) {
   try {
@@ -12,4 +14,6 @@ async function getData(url) {
   }
 }
 
-getData(url);
+getData(url);*/
+
+insertTitle();
