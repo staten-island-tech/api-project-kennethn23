@@ -49,6 +49,7 @@ async function getData() {
               <h1 id="card-title">Name this agent using one of their ability's icons!</h1>
               <img src="${agentAbilityIcon}" alt=${agentAbilityName}>
             </div>`)
+
         } else if (randomNumber == 3) {
           // ability name
           const agentAbilityName = agent.abilities[getRandomInt(0, agent.abilities.length)].displayName;
@@ -57,18 +58,20 @@ async function getData() {
               <h1 id="card-title">Name this agent using one of their ability's names!</h1>
               <h3 id="card-desc">${agentAbilityName}</h3>
             </div>`)
+
         }
       }
 
       function scoreCounter(outcome) {
-        let counter = document.querySelector(".scoreCounter").textContent;
+        let counter = document.querySelector("#score").textContent;
 
         if (outcome == true) {
           let updatedCounter = Number(counter) + 1;
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
             `<div class="scoreCounter">
-              <p>${updatedCounter}<p>
+              <h3>Score</h3>
+              <p id="score">${updatedCounter}<p>
             </div>`)
 
         } else if (outcome == false) {
@@ -76,7 +79,8 @@ async function getData() {
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
             `<div class="scoreCounter">
-              <p>${updatedCounter}<p>
+              <h3>Score</h3>
+              <p id="score">${updatedCounter}<p>
             </div>`)
         }
       };
@@ -94,6 +98,7 @@ async function getData() {
             DOMSelectors.box.innerHTML = "";
             getData();
           });
+          
         } else {
           DOMSelectors.box.innerHTML = "";
           DOMSelectors.box.insertAdjacentHTML("beforeend",
