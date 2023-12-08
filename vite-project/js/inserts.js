@@ -41,7 +41,6 @@ async function getData() {
             <h1 id="card-title">Name this agent using one of their ability's descriptions!</h1>
             <h3 id="card-desc">${agentAbilityDescription}</h3>
           </div>`);
-          console.log(randomNumber);
           insertDropdown("agent", randomNumber);
 
         } else if (randomNumber == 2) {
@@ -52,8 +51,8 @@ async function getData() {
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's icons!</h1>
               <img src="${agentAbilityIcon}" alt=${agentAbilityName}>
-            </div>`)
-            insertDropd;own("agent", randomNumber);
+            </div>`);
+          insertDropdown("agent", randomNumber);
 
         } else if (randomNumber == 3) {
           // ability name
@@ -63,7 +62,7 @@ async function getData() {
               <h1 id="card-title">Name this agent using one of their ability's names!</h1>
               <h3 id="card-desc">${agentAbilityName}</h3>
             </div>`);
-            insertDropdown("agent", randomNumber);
+          insertDropdown("agent", randomNumber);
 
         }
       }
@@ -94,7 +93,7 @@ async function getData() {
       function checkAnswer(value, type, randomNumber) {
         if (type == "agent") {
           if (value == agent.displayName) {
-            if (randomNumber >= 1) {
+            if (randomNumber == 1 || randomNumber == 2) {
               insertDropdown("ability");
             } else {
               DOMSelectors.box.innerHTML = "";
@@ -130,10 +129,11 @@ async function getData() {
 
         } else if (type == "ability") {
           if (value == agentAbility.slot) {
+            console.log(value);
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="win">
-              <h1 id="win-title">Congratulations! The answer was ${agentAbility.slot}</h1>
+              <h1 id="win-title">Congratulations! The answer was ${agentAbility.displayName}</h1>
               <button type="submit" class="playButton">CONTINUE</button>
             </div>`)
             scoreCounter(2);
@@ -146,7 +146,7 @@ async function getData() {
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="win">
-              <h1 id="win-title">u suck The answer was ${agentAbility.slot}</h1>
+              <h1 id="win-title">u suck The answer was ${agentAbility.displayName}</h1>
               <button type="submit" class="playButton">RESTART</button>
             </div>`)
             scoreCounter(0);
@@ -201,20 +201,16 @@ async function getData() {
           });
 
         } else if (type == "ability") {
-          function addSlots (agent) {
-            document.querySelector(".submitField").insertAdjacentHTML("beforeend",
-            `<option value ="${agent.abilities[0].slot}">Ability 1 (Q)</option>
-            <option value ="${agent.abilities[1].slot}">Ability 2 (C)</option>
-            <option value ="${agent.abilities[2].slot}">Signature (E)</option>
-            <option value ="${agent.abilities[3].slot}">Ultimate (X)</option>`)
-          }
 
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="submitField">
             <label for="ability-select">Submit your guess</label>
             <select name="abilities" id="ability-select">
               <option value="">Which ability slot is this ability</option>
-              ${addSlots(agent)}
+              <option value ="${agent.abilities[0].slot}">${agent.abilities[0].displayName}</option>
+              <option value ="${agent.abilities[1].slot}">${agent.abilities[1].displayName}</option>
+              <option value ="${agent.abilities[2].slot}">${agent.abilities[2].displayName}</option>
+              <option value ="${agent.abilities[3].slot}">${agent.abilities[3].displayName}</option>
             </select>
           </div>`)
 
@@ -225,8 +221,8 @@ async function getData() {
         }
       }
       
-      insertRandomCard(1);
-      // insertRandomCard(getRandomInt(0, 4));
+      // insertRandomCard(1);
+      insertRandomCard(getRandomInt(0, 4));
 
     }
 
