@@ -15,6 +15,7 @@ async function getData() {
 
     } else {
       const data = await response.json();
+      // console.log(data);
       const agentArray = data.data.filter((agent) => agent.isPlayableCharacter == true);
       const agent = agentArray[getRandomInt(0, agentArray.length)];
       const filteredAgentAbility = agent.abilities.filter((ability) => ability.slot != "Passive");
@@ -67,6 +68,20 @@ async function getData() {
         }
       }
 
+      function highScore() {
+        let highScore = document.querySelector("#high-score").textContent;
+        let currentScore = document.querySelector("#score").textContent;
+        // console.log(highScore);
+        // console.log(currentScore);
+
+        if (Number(currentScore) > Number(highScore)) {
+          DOMSelectors.highScoreCounter.innerHTML = "";
+          DOMSelectors.highScoreCounter.insertAdjacentHTML("beforeend",
+          `<h3>High Score</h3>
+          <p id="high-score">${currentScore}<p>`)
+        }
+      }
+
       function scoreCounter(outcome) {
         let counter = document.querySelector("#score").textContent;
 
@@ -74,20 +89,18 @@ async function getData() {
           let updatedCounter = Number(counter) + outcome;
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
-            `<div class="scoreCounter">
-              <h3>Score</h3>
-              <p id="score">${updatedCounter}<p>
-            </div>`)
+            `<h3>Score</h3>
+            <p id="score">${updatedCounter}<p>`)
 
         } else {
           let updatedCounter = 0;
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
-            `<div class="scoreCounter">
-              <h3>Score</h3>
-              <p id="score">${updatedCounter}<p>
-            </div>`)
+            `<h3>Score</h3>
+            <p id="score">${updatedCounter}<p>`)
         }
+
+        highScore(counter);
       };
 
       function checkAnswer(value, type, randomNumber) {
@@ -128,8 +141,8 @@ async function getData() {
           }
 
         } else if (type == "ability") {
-          if (value == agentAbility.slot) {
-            console.log(value);
+          if (value == agentAbility.displayName) {
+            // console.log(value);
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="win">
@@ -196,7 +209,7 @@ async function getData() {
           </div>`)
 
           document.querySelector("#agent-select").addEventListener("change", function() {
-            console.log(randomNumber);
+            // console.log(randomNumber);
             checkAnswer(document.querySelector("#agent-select").value, "agent", randomNumber);
           });
 
@@ -207,10 +220,10 @@ async function getData() {
             <label for="ability-select">Submit your guess</label>
             <select name="abilities" id="ability-select">
               <option value="">Which ability slot is this ability</option>
-              <option value ="${agent.abilities[0].slot}">${agent.abilities[0].displayName}</option>
-              <option value ="${agent.abilities[1].slot}">${agent.abilities[1].displayName}</option>
-              <option value ="${agent.abilities[2].slot}">${agent.abilities[2].displayName}</option>
-              <option value ="${agent.abilities[3].slot}">${agent.abilities[3].displayName}</option>
+              <option value ="${agent.abilities[0].displayName}">${agent.abilities[0].displayName}</option>
+              <option value ="${agent.abilities[1].displayName}">${agent.abilities[1].displayName}</option>
+              <option value ="${agent.abilities[2].displayName}">${agent.abilities[2].displayName}</option>
+              <option value ="${agent.abilities[3].displayName}">${agent.abilities[3].displayName}</option>
             </select>
           </div>`)
 
