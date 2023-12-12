@@ -1,3 +1,60 @@
+:root {
+
+
+    --h1: 3.375rem;
+    --h2: 2.25rem;
+    --h3: 1.5rem;
+    --h4: 1rem;
+    --h5: 0.5rem;
+}
+
+.win {
+    background-color: greenyellow;
+}
+
+.lose {
+    background-color: red;
+}
+
 img {
     background-color: black;
+}
+
+body {
+    display: flex;
+}
+
+.highScoreCounter {
+    position: absolute;
+    left: 30px;
+}
+
+.scoreCounter {
+    position: absolute;
+    right: 30px;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.title {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+}
+
+.playButton {
+    margin: auto;
+    width: 50%;
 }

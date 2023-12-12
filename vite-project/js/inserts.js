@@ -109,6 +109,7 @@ async function getData() {
             if (randomNumber == 1 || randomNumber == 2) {
               insertDropdown("ability");
             } else {
+              document.body.classList.add("win");
               DOMSelectors.box.innerHTML = "";
               DOMSelectors.box.insertAdjacentHTML("beforeend",
               `<div class="win">
@@ -117,20 +118,23 @@ async function getData() {
               </div>`)
               scoreCounter(1);
               document.querySelector(".playButton").addEventListener("click", function() {
+                document.body.classList.remove("win");
                 DOMSelectors.box.innerHTML = "";
                 getData();
               });
             }
             
           } else {
+            document.body.classList.add("lose");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
-            `<div class="win">
+            `<div class="lose">
               <h1 id="win-title">u suck The answer was ${agent.displayName}</h1>
               <button type="submit" class="playButton">RESTART</button>
             </div>`)
             scoreCounter(0);
             document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("lose");
               DOMSelectors.box.innerHTML = "";
               insertTitle();
               document.querySelector(".playButton").addEventListener("click", function() {
@@ -143,6 +147,7 @@ async function getData() {
         } else if (type == "ability") {
           if (value == agentAbility.displayName) {
             // console.log(value);
+            document.body.classList.add("win");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="win">
@@ -151,19 +156,22 @@ async function getData() {
             </div>`)
             scoreCounter(2);
             document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("win");
               DOMSelectors.box.innerHTML = "";
               getData();
             });
             
           } else {
+            document.body.classList.add("lose");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
-            `<div class="win">
+            `<div class="lose">
               <h1 id="win-title">u suck The answer was ${agentAbility.displayName}</h1>
               <button type="submit" class="playButton">RESTART</button>
             </div>`)
             scoreCounter(0);
             document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("lose");
               DOMSelectors.box.innerHTML = "";
               insertTitle();
               document.querySelector(".playButton").addEventListener("click", function() {
