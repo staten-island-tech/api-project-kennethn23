@@ -1,5 +1,5 @@
 :root {
-
+    
 
     --h1: 3.375rem;
     --h2: 2.25rem;
@@ -27,11 +27,19 @@ body {
 .highScoreCounter {
     position: absolute;
     left: 30px;
+
 }
 
 .scoreCounter {
     position: absolute;
     right: 30px;
+}
+
+.highScoreCounter,
+.scoreCounter {
+    width: 15%;
+    background-color: yellow;
+    border-radius: 50px;
 }
 
 #app {
@@ -45,6 +53,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: auto;
+    width: 60%;
 }
 
 .title {
@@ -55,6 +64,44 @@ body {
 }
 
 .playButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: auto;
     width: 50%;
+    border-radius: 50px;
+    background-color: greenyellow;
+    padding: 20px;
+    transition: all 0.5s;
+}
+
+.playButton:hover {
+    transform: scale(1.15);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+.submitField {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+#agent-select,
+#ability-select {
+    width: 33%;
+}
+
+h3, 
+#high-score,
+#score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

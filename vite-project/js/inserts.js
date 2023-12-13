@@ -8,18 +8,24 @@ function getRandomInt(min, max) {
 
 async function getData() {
   const url = `https://valorant-api.com/v1/agents`;
+  const weaponURL = `https://valorant-api.com/v1/weapons`;
   try {
     const response = await fetch(url);
-    if (response.status < 200 || response.status > 299) {
+    const weaponResponse = await fetch(weaponURL);
+    if (response.status < 200 || response.status > 299 || weaponResponse.status < 200 || weaponResponse.status > 299) {
       throw new Error(response);
 
     } else {
       const data = await response.json();
+      const weaponData = await weaponResponse.json();
       // console.log(data);
       const agentArray = data.data.filter((agent) => agent.isPlayableCharacter == true);
       const agent = agentArray[getRandomInt(0, agentArray.length)];
       const filteredAgentAbility = agent.abilities.filter((ability) => ability.slot != "Passive");
       const agentAbility = filteredAgentAbility[getRandomInt(0, agent.abilities.length)];
+
+      const weaponArray = weaponData.data;
+      console.log(weaponArray);
 
       function insertRandomCard (randomNumber) {
         console.log(agent);
@@ -187,7 +193,7 @@ async function getData() {
         if (type == "agent") {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="submitField">
-            <label for="agent-select">Submit your guess</label>
+            <label for="agent-select">Which agent is this?</label>
             <select name="agents" id="agent-select">
               <option value="">Choose an agent</option>
               <option value="Astra">Astra</option>
@@ -225,9 +231,9 @@ async function getData() {
 
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="submitField">
-            <label for="ability-select">Submit your guess</label>
+            <label for="ability-select">Which ability is this?</label>
             <select name="abilities" id="ability-select">
-              <option value="">Which ability slot is this ability</option>
+              <option value="">Choose an ability</option>
               <option value ="${agent.abilities[0].displayName}">${agent.abilities[0].displayName}</option>
               <option value ="${agent.abilities[1].displayName}">${agent.abilities[1].displayName}</option>
               <option value ="${agent.abilities[2].displayName}">${agent.abilities[2].displayName}</option>
