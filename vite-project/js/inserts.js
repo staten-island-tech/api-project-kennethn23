@@ -25,6 +25,7 @@ async function getData() {
       const agentAbility = filteredAgentAbility[getRandomInt(0, agent.abilities.length)];
 
       const weaponArray = weaponData.data;
+      const weapon = weaponArray[getRandomInt(0, weaponArray.length)];
       console.log(weaponArray);
 
       function insertRandomCard (randomNumber) {
@@ -70,6 +71,17 @@ async function getData() {
               <h3 id="card-desc">${agentAbilityName}</h3>
             </div>`);
           insertDropdown("agent", randomNumber);
+
+        } else if (randomNumber == 4) {
+          // ability name
+          const weaponIcon = weapon.displayIcon;
+          const weaponName = weapon.displayName;
+          DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="card">
+              <h1 id="card-title">Name this weapon using its icon!</h1>
+              <img src="${weaponIcon}" alt=${weaponName}>
+            </div>`);
+          insertDropdown("weapon", randomNumber);
 
         }
       }
@@ -186,6 +198,42 @@ async function getData() {
               });
             });
           }
+        } else if (type == "weapon") {
+          if (value == weapon.displayName) {
+            // console.log(value);
+            document.body.classList.add("win");
+            DOMSelectors.box.innerHTML = "";
+            DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="win">
+              <h1 id="win-title">Congratulations! The answer was ${weapon.displayName}</h1>
+              <button type="submit" class="playButton">CONTINUE</button>
+            </div>`)
+            scoreCounter(1);
+            document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("win");
+              DOMSelectors.box.innerHTML = "";
+              getData();
+            });
+            
+          } else {
+            document.body.classList.add("lose");
+            DOMSelectors.box.innerHTML = "";
+            DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="lose">
+              <h1 id="win-title">u suck The answer was ${weapon.displayName}</h1>
+              <button type="submit" class="playButton">RESTART</button>
+            </div>`)
+            scoreCounter(0);
+            document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("lose");
+              DOMSelectors.box.innerHTML = "";
+              insertTitle();
+              document.querySelector(".playButton").addEventListener("click", function() {
+                DOMSelectors.box.innerHTML = "";
+                getData();
+              });
+            });
+          }
         }
       }
 
@@ -245,11 +293,43 @@ async function getData() {
             checkAnswer(document.querySelector("#ability-select").value, "ability");
           });
           
+        } else if (type == "weapon") {
+
+          DOMSelectors.box.insertAdjacentHTML("beforeend",
+          `<div class="submitField">
+            <label for="ability-select">Which weapon is this?</label>
+            <select name="weapons" id="weapon-select">
+              <option value="">Choose a weapon</option>
+              <option value ="Melee">Melee</option>
+              <option value ="Classic">Classic</option>
+              <option value ="Shorty">Shorty</option>
+              <option value ="Frenzy">Frenzy</option>
+              <option value ="Ghost">Ghost</option>
+              <option value ="Sheriff">Sheriff</option>
+              <option value ="Stinger">Stinger</option>
+              <option value ="Spectre">Spectre</option>
+              <option value ="Bucky">Bucky</option>
+              <option value ="Judge">Judge</option>
+              <option value ="Bulldog">Bulldog</option>
+              <option value ="Guardian">Guardian</option>
+              <option value ="Phantom">Phantom</option>
+              <option value ="Vandal">Vandal</option>
+              <option value ="Marshal">Marshal</option>
+              <option value ="Operator">Operator</option>
+              <option value ="Ares">Ares</option>
+              <option value ="Odin">Odin</option>
+            </select>
+          </div>`)
+
+          document.querySelector("#weapon-select").addEventListener("change", function() {
+            checkAnswer(document.querySelector("#weapon-select").value, "weapon");
+          });
+          
         }
       }
       
       // insertRandomCard(1);
-      insertRandomCard(getRandomInt(0, 4));
+      insertRandomCard(getRandomInt(0, 5));
 
     }
 
