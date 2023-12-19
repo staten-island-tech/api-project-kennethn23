@@ -147,7 +147,7 @@ async function getData() {
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="lose">
-              <h1 id="win-title">u suck The answer was ${agent.displayName}</h1>
+              <h1 id="win-title">The answer was actually ${agent.displayName} :(</h1>
               <button type="submit" class="playButton">RESTART</button>
             </div>`)
             scoreCounter(0);
@@ -184,7 +184,7 @@ async function getData() {
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="lose">
-              <h1 id="win-title">u suck The answer was ${agentAbility.displayName}</h1>
+              <h1 id="win-title">The answer was actually ${agentAbility.displayName} :(</h1>
               <button type="submit" class="playButton">RESTART</button>
             </div>`)
             scoreCounter(0);
@@ -220,7 +220,7 @@ async function getData() {
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="lose">
-              <h1 id="win-title">u suck The answer was ${weapon.displayName}</h1>
+              <h1 id="win-title">The answer was actually ${weapon.displayName} :(</h1>
               <button type="submit" class="playButton">RESTART</button>
             </div>`)
             scoreCounter(0);
@@ -334,7 +334,7 @@ async function getData() {
     }
 
   } catch (error) {
-
+    document.querySelector(".content").textContent = "Error";
   }
 }; 
 
