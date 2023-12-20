@@ -3,10 +3,14 @@
     --gradientGray2: #313238;
     --gradientGray3: #27282e;
     --gradientGray4: #17171c;
-    --red: rgba(255, 87, 87, 0.192);
-    --green: rgba(126, 255, 87, 0.192);
+    --redTransp: rgba(255, 87, 87, 0.192);
+    --green: rgb(126, 255, 87);
+    --greenTransp: rgba(126, 255, 87, 0.192);
     --yellow: #ffe15c;
+    --yellow2: #ffe72e;
+    --yellow3: #fff200;
     --content: rgba(0, 0, 0, 0.15);
+    --content2: rgba(255, 255, 255, 0.15);
 
     --h1: 3.375rem;
     --h2: 2.25rem;
@@ -16,7 +20,7 @@
 }
 
 .win {
-    background-color: var(--green);
+    background-color: var(--greenTransp);
     border-radius: 100px;
     padding: 100px;
     display: flex;
@@ -27,7 +31,7 @@
 }
 
 .lose {
-    background-color: var(--red);
+    background-color: var(--redTransp);
     border-radius: 100px;
     padding: 100px;
     display: flex;
@@ -41,8 +45,8 @@ img {
     background-color: var(--content);
     border-radius: 50px;
     padding: 30px;
-    height: 256px;
-    width: 256px;
+    height: 168px;
+    width: 168px;
 }
 
 body {
@@ -107,6 +111,9 @@ body {
     background-color: greenyellow;
     padding: 20px;
     transition: all 0.5s;
+    border-color: var(--green);
+    border-width: 3px;
+    border-style: outset;
 }
 
 .playButton:hover {
@@ -120,7 +127,7 @@ body {
     align-items: center;
     background-color: var(--content);
     border-radius: 50px;
-    padding: 30px;
+    padding: 50px;
 }
 
 .submitField {
@@ -130,11 +137,29 @@ body {
     margin-top: 30px;
     width: 100%;
     text-align: center;
+    background-color: var(--content);
+    border-radius: 50px;
+    padding: 30px;
+    width: 40%;
+}
+
+#abilitySubmitField {
+    background-color: var(--content2);
+    padding: 50px;
+    transition: all 0.5s;
 }
 
 #agent-select,
-#ability-select {
-    width: 33%;
+#ability-select,
+#weapon-select {
+    background-color: var(--yellow);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    background: linear-gradient(to bottom right, var(--yellow), var(--yellow2), var(--yellow3));
+    border-color: var(--green);
+    border-width: 3px;
+    border-style: outset;
 }
 
 h3, 
@@ -143,4 +168,9 @@ h3,
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#weapon-img {
+    height: 100%;
+    width: 100%;
 }

@@ -79,7 +79,7 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this weapon using its icon!</h1>
-              <img src="${weaponIcon}" alt=${weaponName}>
+              <img src="${weaponIcon}" alt=${weaponName} id="weapon-img">
             </div>`);
           insertDropdown("weapon", randomNumber);
 
@@ -125,6 +125,7 @@ async function getData() {
         if (type == "agent") {
           if (value == agent.displayName) {
             if (randomNumber == 1 || randomNumber == 2) {
+              document.querySelector(".submitField").remove();
               insertDropdown("ability");
             } else {
               document.body.classList.add("win");
@@ -278,7 +279,7 @@ async function getData() {
         } else if (type == "ability") {
 
           DOMSelectors.box.insertAdjacentHTML("beforeend",
-          `<div class="submitField">
+          `<div class="submitField" id="abilitySubmitField">
             <label for="ability-select">Which ability is this?</label>
             <select name="abilities" id="ability-select">
               <option value="">Choose an ability</option>
@@ -297,7 +298,7 @@ async function getData() {
 
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="submitField">
-            <label for="ability-select">Which weapon is this?</label>
+            <label for="weapon-select">Which weapon is this?</label>
             <select name="weapons" id="weapon-select">
               <option value="">Choose a weapon</option>
               <option value ="Melee">Melee</option>
