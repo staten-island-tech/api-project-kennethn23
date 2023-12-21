@@ -6,6 +6,8 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
+let counter = 0;
+
 async function getData() {
   const url = `https://valorant-api.com/v1/agents`;
   const weaponURL = `https://valorant-api.com/v1/weapons`;
@@ -13,7 +15,7 @@ async function getData() {
     const response = await fetch(url);
     const weaponResponse = await fetch(weaponURL);
     if (response.status < 200 || response.status > 299 || weaponResponse.status < 200 || weaponResponse.status > 299) {
-      throw new Error(response);
+      throw new Error(response.statusText);
 
     } else {
       const data = await response.json();
@@ -26,10 +28,8 @@ async function getData() {
 
       const weaponArray = weaponData.data;
       const weapon = weaponArray[getRandomInt(0, weaponArray.length)];
-      console.log(weaponArray);
 
       function insertRandomCard (randomNumber) {
-        console.log(agent);
         
         if (randomNumber == 0) {
           // agent description
@@ -101,21 +101,21 @@ async function getData() {
       }
 
       function scoreCounter(outcome) {
-        let counter = document.querySelector("#score").textContent;
+        const currentCounter = Number(counter);
 
         if (outcome != 0) {
-          let updatedCounter = Number(counter) + outcome;
+          counter = currentCounter + outcome;
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
             `<h3>Score</h3>
-            <p id="score">${updatedCounter}<p>`)
+            <p id="score">${counter}<p>`)
 
         } else {
-          let updatedCounter = 0;
+          counter = 0;
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
             `<h3>Score</h3>
-            <p id="score">${updatedCounter}<p>`)
+            <p id="score">${counter}<p>`)
         }
 
         highScore(counter);
@@ -335,7 +335,7 @@ async function getData() {
     }
 
   } catch (error) {
-    document.querySelector(".content").textContent = "Error";
+    document.querySelector(".content").textContent = error;
   }
 }; 
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap');
+
 :root {
     --gradientGray1: #5a5a5c;
     --gradientGray2: #313238;
@@ -55,6 +57,7 @@ body {
     margin: auto;
     background: linear-gradient(to bottom right, var(--gradientGray1), var(--gradientGray2), var(--gradientGray3), var(--gradientGray4));
     color: white;
+    font-family: 'Kanit', sans-serif;
 }
 
 .highScoreCounter {
