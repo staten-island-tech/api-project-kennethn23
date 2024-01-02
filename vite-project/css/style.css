@@ -17,7 +17,7 @@
     --h1: 3.375rem;
     --h2: 2.25rem;
     --h3: 1.5rem;
-    --h4: 1rem;
+    --h4: 1.17rem;
     --h5: 0.5rem;
 }
 
@@ -131,6 +131,10 @@ body {
     background-color: var(--content);
     border-radius: 50px;
     padding: 50px;
+}
+
+#card-desc {
+    font-size: var(--h4);
 }
 
 .submitField {

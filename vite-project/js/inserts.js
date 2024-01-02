@@ -37,7 +37,7 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="card">
             <h1 id="card-title">Name this agent using their description!</h1>
-            <h3 id="card-desc">${agentDescription}</h3>
+            <h2 id="card-desc">${agentDescription}</h2>
           </div>`);
           insertDropdown("agent", randomNumber);
 
@@ -47,7 +47,7 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="card">
             <h1 id="card-title">Name this agent using one of their ability's descriptions!</h1>
-            <h3 id="card-desc">${agentAbilityDescription}</h3>
+            <h2 id="card-desc">${agentAbilityDescription}</h2>
           </div>`);
           insertDropdown("agent", randomNumber);
 
@@ -58,7 +58,7 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's icons!</h1>
-              <img src="${agentAbilityIcon}" alt=${agentAbilityName}>
+              <img src="${agentAbilityIcon}" alt="Image of an ability">
             </div>`);
           insertDropdown("agent", randomNumber);
 
@@ -68,7 +68,7 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's names!</h1>
-              <h3 id="card-desc">${agentAbilityName}</h3>
+              <h2 id="card-desc">${agentAbilityName}</h2>
             </div>`);
           insertDropdown("agent", randomNumber);
 
@@ -79,7 +79,7 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this weapon using its icon!</h1>
-              <img src="${weaponIcon}" alt=${weaponName} id="weapon-img">
+              <img src="${weaponIcon}" alt="Image of a weapon" id="weapon-img">
             </div>`);
           insertDropdown("weapon", randomNumber);
 
