@@ -1,3 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap');
+
+:root {
+    --gradientGray1: #5a5a5c;
+    --gradientGray2: #313238;
+    --gradientGray3: #27282e;
+    --gradientGray4: #17171c;
+    --redTransp: rgba(255, 87, 87, 0.192);
+    --green: rgb(126, 255, 87);
+    --greenTransp: rgba(126, 255, 87, 0.192);
+    --yellow: #ffe15c;
+    --yellow2: #ffe72e;
+    --yellow3: #fff200;
+    --content: rgba(0, 0, 0, 0.15);
+    --content2: rgba(255, 255, 255, 0.15);
+
+    --h1: 3.375rem;
+    --h2: 2.25rem;
+    --h3: 1.5rem;
+    --h4: 1rem;
+    --h5: 0.5rem;
+}
+
+.win {
+    background-color: var(--greenTransp);
+    border-radius: 100px;
+    padding: 100px;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.lose {
+    background-color: var(--redTransp);
+    border-radius: 100px;
+    padding: 100px;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
 img {
-    background-color: black;
+    background-color: var(--content);
+    border-radius: 50px;
+    padding: 30px;
+    height: 168px;
+    width: 168px;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    margin: auto;
+    background: linear-gradient(to bottom right, var(--gradientGray1), var(--gradientGray2), var(--gradientGray3), var(--gradientGray4));
+    color: white;
+    font-family: 'Kanit', sans-serif;
+}
+
+.highScoreCounter {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+
+}
+
+.scoreCounter {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+}
+
+.highScoreCounter,
+.scoreCounter {
+    width: 15%;
+    background-color: var(--yellow);
+    border-radius: 50px;
+    color: black;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 60%;
+    text-align: center;
+    align-items: center;
+}
+
+.title {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+}
+
+.playButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    width: 50%;
+    border-radius: 50px;
+    background-color: greenyellow;
+    padding: 20px;
+    transition: all 0.5s;
+    border-color: var(--green);
+    border-width: 3px;
+    border-style: outset;
+}
+
+.playButton:hover {
+    transform: scale(1.15);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    align-items: center;
+    background-color: var(--content);
+    border-radius: 50px;
+    padding: 50px;
+}
+
+.submitField {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    background-color: var(--content);
+    border-radius: 50px;
+    padding: 30px;
+    width: 40%;
+}
+
+#abilitySubmitField {
+    background-color: var(--content2);
+    padding: 50px;
+    transition: all 0.5s;
+}
+
+#agent-select,
+#ability-select,
+#weapon-select {
+    background-color: var(--yellow);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    background: linear-gradient(to bottom right, var(--yellow), var(--yellow2), var(--yellow3));
+    border-color: var(--green);
+    border-width: 3px;
+    border-style: outset;
+}
+
+h3, 
+#high-score,
+#score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#weapon-img {
+    height: 100%;
+    width: 100%;
 }

@@ -6,20 +6,30 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
+let counter = 0;
+
 async function getData() {
   const url = `https://valorant-api.com/v1/agents`;
+  const weaponURL = `https://valorant-api.com/v1/weapons`;
   try {
     const response = await fetch(url);
-    if (response.status < 200 || response.status > 299) {
-      throw new Error(response);
+    const weaponResponse = await fetch(weaponURL);
+    if (response.status < 200 || response.status > 299 || weaponResponse.status < 200 || weaponResponse.status > 299) {
+      throw new Error(response.statusText);
 
     } else {
       const data = await response.json();
+      const weaponData = await weaponResponse.json();
+      // console.log(data);
       const agentArray = data.data.filter((agent) => agent.isPlayableCharacter == true);
       const agent = agentArray[getRandomInt(0, agentArray.length)];
+      const filteredAgentAbility = agent.abilities.filter((ability) => ability.slot != "Passive");
+      const agentAbility = filteredAgentAbility[getRandomInt(0, agent.abilities.length)];
+
+      const weaponArray = weaponData.data;
+      const weapon = weaponArray[getRandomInt(0, weaponArray.length)];
 
       function insertRandomCard (randomNumber) {
-        console.log(agent);
         
         if (randomNumber == 0) {
           // agent description
@@ -28,140 +38,304 @@ async function getData() {
           `<div class="card">
             <h1 id="card-title">Name this agent using their description!</h1>
             <h3 id="card-desc">${agentDescription}</h3>
-          </div>`)
+          </div>`);
+          insertDropdown("agent", randomNumber);
 
         } else if (randomNumber == 1) {
           // ability description
-          const agentAbilityDescription = agent.abilities[getRandomInt(0, agent.abilities.length)].description.replace(agent.displayName, "_");
+          const agentAbilityDescription = agentAbility.description.replace(agent.displayName, "_");
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="card">
             <h1 id="card-title">Name this agent using one of their ability's descriptions!</h1>
             <h3 id="card-desc">${agentAbilityDescription}</h3>
-          </div>`)
+          </div>`);
+          insertDropdown("agent", randomNumber);
 
         } else if (randomNumber == 2) {
           // ability icon
-          const filteredArray = agent.abilities.filter((ability) => ability.slot != "Passive")
-          const agentAbilityIcon = filteredArray[getRandomInt(0, filteredArray.length)].displayIcon;
-          const agentAbilityName = filteredArray[getRandomInt(0, filteredArray.length)].displayName;
+          const agentAbilityIcon = agentAbility.displayIcon;
+          const agentAbilityName = agentAbility.displayName;
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's icons!</h1>
               <img src="${agentAbilityIcon}" alt=${agentAbilityName}>
-            </div>`)
+            </div>`);
+          insertDropdown("agent", randomNumber);
 
         } else if (randomNumber == 3) {
           // ability name
-          const agentAbilityName = agent.abilities[getRandomInt(0, agent.abilities.length)].displayName;
+          const agentAbilityName = agentAbility.displayName;
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's names!</h1>
               <h3 id="card-desc">${agentAbilityName}</h3>
-            </div>`)
+            </div>`);
+          insertDropdown("agent", randomNumber);
 
+        } else if (randomNumber == 4) {
+          // ability name
+          const weaponIcon = weapon.displayIcon;
+          const weaponName = weapon.displayName;
+          DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="card">
+              <h1 id="card-title">Name this weapon using its icon!</h1>
+              <img src="${weaponIcon}" alt=${weaponName} id="weapon-img">
+            </div>`);
+          insertDropdown("weapon", randomNumber);
+
+        }
+      }
+
+      function highScore() {
+        let highScore = document.querySelector("#high-score").textContent;
+        let currentScore = document.querySelector("#score").textContent;
+        // console.log(highScore);
+        // console.log(currentScore);
+
+        if (Number(currentScore) > Number(highScore)) {
+          DOMSelectors.highScoreCounter.innerHTML = "";
+          DOMSelectors.highScoreCounter.insertAdjacentHTML("beforeend",
+          `<h3>High Score</h3>
+          <p id="high-score">${currentScore}<p>`)
         }
       }
 
       function scoreCounter(outcome) {
-        let counter = document.querySelector("#score").textContent;
+        const currentCounter = Number(counter);
 
-        if (outcome == true) {
-          let updatedCounter = Number(counter) + 1;
+        if (outcome != 0) {
+          counter = currentCounter + outcome;
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
-            `<div class="scoreCounter">
-              <h3>Score</h3>
-              <p id="score">${updatedCounter}<p>
-            </div>`)
+            `<h3>Score</h3>
+            <p id="score">${counter}<p>`)
 
-        } else if (outcome == false) {
-          let updatedCounter = 0;
+        } else {
+          counter = 0;
           DOMSelectors.scoreCounter.innerHTML = "";
           DOMSelectors.scoreCounter.insertAdjacentHTML("beforeend",
-            `<div class="scoreCounter">
-              <h3>Score</h3>
-              <p id="score">${updatedCounter}<p>
-            </div>`)
+            `<h3>Score</h3>
+            <p id="score">${counter}<p>`)
         }
+
+        highScore(counter);
       };
 
-      function checkAnswer(value) {
-        if (value == agent.displayName) {
-          DOMSelectors.box.innerHTML = "";
-          DOMSelectors.box.insertAdjacentHTML("beforeend",
-          `<div class="win">
-            <h1 id="win-title">Congratulations! The answer was ${agent.displayName}</h1>
-            <button type="submit" class="playButton">CONTINUE</button>
-          </div>`)
-          scoreCounter(true);
-          document.querySelector(".playButton").addEventListener("click", function() {
+      function checkAnswer(value, type, randomNumber) {
+        if (type == "agent") {
+          if (value == agent.displayName) {
+            if (randomNumber == 1 || randomNumber == 2) {
+              document.querySelector(".submitField").remove();
+              insertDropdown("ability");
+            } else {
+              document.body.classList.add("win");
+              DOMSelectors.box.innerHTML = "";
+              DOMSelectors.box.insertAdjacentHTML("beforeend",
+              `<div class="win">
+                <h1 id="win-title">Congratulations! The answer was ${agent.displayName}</h1>
+                <button type="submit" class="playButton">CONTINUE</button>
+              </div>`)
+              scoreCounter(1);
+              document.querySelector(".playButton").addEventListener("click", function() {
+                document.body.classList.remove("win");
+                DOMSelectors.box.innerHTML = "";
+                getData();
+              });
+            }
+            
+          } else {
+            document.body.classList.add("lose");
             DOMSelectors.box.innerHTML = "";
-            getData();
-          });
-          
-        } else {
-          DOMSelectors.box.innerHTML = "";
-          DOMSelectors.box.insertAdjacentHTML("beforeend",
-          `<div class="win">
-            <h1 id="win-title">u suck The answer was ${agent.displayName}</h1>
-            <button type="submit" class="playButton">RESTART</button>
-          </div>`)
-          scoreCounter(false);
-          document.querySelector(".playButton").addEventListener("click", function() {
-            DOMSelectors.box.innerHTML = "";
-            insertTitle();
+            DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="lose">
+              <h1 id="win-title">The answer was actually ${agent.displayName} :(</h1>
+              <button type="submit" class="playButton">RESTART</button>
+            </div>`)
+            scoreCounter(0);
             document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("lose");
+              DOMSelectors.box.innerHTML = "";
+              insertTitle();
+              document.querySelector(".playButton").addEventListener("click", function() {
+                DOMSelectors.box.innerHTML = "";
+                getData();
+              });
+            });
+          }
+
+        } else if (type == "ability") {
+          if (value == agentAbility.displayName) {
+            // console.log(value);
+            document.body.classList.add("win");
+            DOMSelectors.box.innerHTML = "";
+            DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="win">
+              <h1 id="win-title">Congratulations! The answer was ${agentAbility.displayName}</h1>
+              <button type="submit" class="playButton">CONTINUE</button>
+            </div>`)
+            scoreCounter(2);
+            document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("win");
               DOMSelectors.box.innerHTML = "";
               getData();
             });
-          });
+            
+          } else {
+            document.body.classList.add("lose");
+            DOMSelectors.box.innerHTML = "";
+            DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="lose">
+              <h1 id="win-title">The answer was actually ${agentAbility.displayName} :(</h1>
+              <button type="submit" class="playButton">RESTART</button>
+            </div>`)
+            scoreCounter(0);
+            document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("lose");
+              DOMSelectors.box.innerHTML = "";
+              insertTitle();
+              document.querySelector(".playButton").addEventListener("click", function() {
+                DOMSelectors.box.innerHTML = "";
+                getData();
+              });
+            });
+          }
+        } else if (type == "weapon") {
+          if (value == weapon.displayName) {
+            // console.log(value);
+            document.body.classList.add("win");
+            DOMSelectors.box.innerHTML = "";
+            DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="win">
+              <h1 id="win-title">Congratulations! The answer was ${weapon.displayName}</h1>
+              <button type="submit" class="playButton">CONTINUE</button>
+            </div>`)
+            scoreCounter(1);
+            document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("win");
+              DOMSelectors.box.innerHTML = "";
+              getData();
+            });
+            
+          } else {
+            document.body.classList.add("lose");
+            DOMSelectors.box.innerHTML = "";
+            DOMSelectors.box.insertAdjacentHTML("beforeend",
+            `<div class="lose">
+              <h1 id="win-title">The answer was actually ${weapon.displayName} :(</h1>
+              <button type="submit" class="playButton">RESTART</button>
+            </div>`)
+            scoreCounter(0);
+            document.querySelector(".playButton").addEventListener("click", function() {
+              document.body.classList.remove("lose");
+              DOMSelectors.box.innerHTML = "";
+              insertTitle();
+              document.querySelector(".playButton").addEventListener("click", function() {
+                DOMSelectors.box.innerHTML = "";
+                getData();
+              });
+            });
+          }
         }
       }
 
-      function insertDropdown () {
-        DOMSelectors.box.insertAdjacentHTML("beforeend",
-        `<div class="submitField">
-          <label for="agent-select">Submit your guess</label>
-          <select name="agents" id="agent-select">
-            <option value="">Choose an agent</option>
-            <option value="Astra">Astra</option>
-            <option value="Breach">Breach</option>
-            <option value="Brimstone">Brimstone</option>
-            <option value="Chamber">Chamber</option>
-            <option value="Cypher">Cypher</option>
-            <option value="Deadlock">Deadlock</option>
-            <option value="Fade">Fade</option>
-            <option value="Gekko">Gekko</option>
-            <option value="Harbor">Harbor</option>
-            <option value="Iso">Iso</option>
-            <option value="Jett">Jett</option>
-            <option value="KAY/O">KAY/O</option>
-            <option value="Killjoy">Killjoy</option>
-            <option value="Neon">Neon</option>
-            <option value="Omen">Omen</option>
-            <option value="Phoenix">Phoenix</option>
-            <option value="Raze">Raze</option>
-            <option value="Reyna">Reyna</option>
-            <option value="Sage">Sage</option>
-            <option value="Skye">Skye</option>
-            <option value="Sova">Sova</option>
-            <option value="Viper">Viper</option>
-            <option value="Yoru">Yoru</option>
-          </select>
-        </div>`)
+      function insertDropdown (type, randomNumber) {
+        if (type == "agent") {
+          DOMSelectors.box.insertAdjacentHTML("beforeend",
+          `<div class="submitField">
+            <label for="agent-select">Which agent is this?</label>
+            <select name="agents" id="agent-select">
+              <option value="">Choose an agent</option>
+              <option value="Astra">Astra</option>
+              <option value="Breach">Breach</option>
+              <option value="Brimstone">Brimstone</option>
+              <option value="Chamber">Chamber</option>
+              <option value="Cypher">Cypher</option>
+              <option value="Deadlock">Deadlock</option>
+              <option value="Fade">Fade</option>
+              <option value="Gekko">Gekko</option>
+              <option value="Harbor">Harbor</option>
+              <option value="Iso">Iso</option>
+              <option value="Jett">Jett</option>
+              <option value="KAY/O">KAY/O</option>
+              <option value="Killjoy">Killjoy</option>
+              <option value="Neon">Neon</option>
+              <option value="Omen">Omen</option>
+              <option value="Phoenix">Phoenix</option>
+              <option value="Raze">Raze</option>
+              <option value="Reyna">Reyna</option>
+              <option value="Sage">Sage</option>
+              <option value="Skye">Skye</option>
+              <option value="Sova">Sova</option>
+              <option value="Viper">Viper</option>
+              <option value="Yoru">Yoru</option>
+            </select>
+          </div>`)
 
-        document.querySelector("#agent-select").addEventListener("change", function() {
-          checkAnswer(document.querySelector("#agent-select").value);
-        });
+          document.querySelector("#agent-select").addEventListener("change", function() {
+            // console.log(randomNumber);
+            checkAnswer(document.querySelector("#agent-select").value, "agent", randomNumber);
+          });
+
+        } else if (type == "ability") {
+
+          DOMSelectors.box.insertAdjacentHTML("beforeend",
+          `<div class="submitField" id="abilitySubmitField">
+            <label for="ability-select">Which ability is this?</label>
+            <select name="abilities" id="ability-select">
+              <option value="">Choose an ability</option>
+              <option value ="${agent.abilities[0].displayName}">${agent.abilities[0].displayName}</option>
+              <option value ="${agent.abilities[1].displayName}">${agent.abilities[1].displayName}</option>
+              <option value ="${agent.abilities[2].displayName}">${agent.abilities[2].displayName}</option>
+              <option value ="${agent.abilities[3].displayName}">${agent.abilities[3].displayName}</option>
+            </select>
+          </div>`)
+
+          document.querySelector("#ability-select").addEventListener("change", function() {
+            checkAnswer(document.querySelector("#ability-select").value, "ability");
+          });
+          
+        } else if (type == "weapon") {
+
+          DOMSelectors.box.insertAdjacentHTML("beforeend",
+          `<div class="submitField">
+            <label for="weapon-select">Which weapon is this?</label>
+            <select name="weapons" id="weapon-select">
+              <option value="">Choose a weapon</option>
+              <option value ="Melee">Melee</option>
+              <option value ="Classic">Classic</option>
+              <option value ="Shorty">Shorty</option>
+              <option value ="Frenzy">Frenzy</option>
+              <option value ="Ghost">Ghost</option>
+              <option value ="Sheriff">Sheriff</option>
+              <option value ="Stinger">Stinger</option>
+              <option value ="Spectre">Spectre</option>
+              <option value ="Bucky">Bucky</option>
+              <option value ="Judge">Judge</option>
+              <option value ="Bulldog">Bulldog</option>
+              <option value ="Guardian">Guardian</option>
+              <option value ="Phantom">Phantom</option>
+              <option value ="Vandal">Vandal</option>
+              <option value ="Marshal">Marshal</option>
+              <option value ="Operator">Operator</option>
+              <option value ="Ares">Ares</option>
+              <option value ="Odin">Odin</option>
+            </select>
+          </div>`)
+
+          document.querySelector("#weapon-select").addEventListener("change", function() {
+            checkAnswer(document.querySelector("#weapon-select").value, "weapon");
+          });
+          
+        }
       }
       
-      insertRandomCard(getRandomInt(0, 4));
-      insertDropdown();
+      // insertRandomCard(1);
+      insertRandomCard(getRandomInt(0, 5));
 
     }
 
   } catch (error) {
-
+    document.querySelector(".content").textContent = error;
   }
 }; 
 
