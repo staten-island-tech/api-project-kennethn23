@@ -7,6 +7,7 @@ function getRandomInt(min, max) {
 };
 
 let counter = 0;
+let highCounter = 0;
 
 async function getData() {
   const url = `https://valorant-api.com/v1/agents`;
@@ -30,6 +31,8 @@ async function getData() {
       const weapon = weaponArray[getRandomInt(0, weaponArray.length)];
 
       function insertRandomCard (randomNumber) {
+        console.log(agent);
+        console.log(weapon);
         
         if (randomNumber == 0) {
           // agent description
@@ -58,7 +61,7 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's icons!</h1>
-              <img src="${agentAbilityIcon}" alt="Image of an ability">
+              <img src="${agentAbilityIcon}" alt="Image of ${agentAbilityName}">
             </div>`);
           insertDropdown("agent", randomNumber);
 
@@ -79,20 +82,18 @@ async function getData() {
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this weapon using its icon!</h1>
-              <img src="${weaponIcon}" alt="Image of a weapon" id="weapon-img">
+              <img src="${weaponIcon}" alt="Image of ${weaponName}" id="weapon-img">
             </div>`);
           insertDropdown("weapon", randomNumber);
 
         }
       }
 
-      function highScore() {
-        let highScore = document.querySelector("#high-score").textContent;
-        let currentScore = document.querySelector("#score").textContent;
-        // console.log(highScore);
-        // console.log(currentScore);
+      function highScore(currentScore) {
+        const currentHighScore = Number(highCounter);
 
-        if (Number(currentScore) > Number(highScore)) {
+        if (Number(currentScore) > Number(currentHighScore)) {
+          highCounter = currentScore;
           DOMSelectors.highScoreCounter.innerHTML = "";
           DOMSelectors.highScoreCounter.insertAdjacentHTML("beforeend",
           `<h3>High Score</h3>
@@ -240,39 +241,24 @@ async function getData() {
 
       function insertDropdown (type, randomNumber) {
         if (type == "agent") {
+          let agentArrayNames = [];
+          agentArray.forEach((agent) => agentArrayNames.push(agent.displayName));
+          agentArrayNames.sort();
+
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="submitField">
             <label for="agent-select">Which agent is this?</label>
             <select name="agents" id="agent-select">
-              <option value="">Choose an agent</option>
-              <option value="Astra">Astra</option>
-              <option value="Breach">Breach</option>
-              <option value="Brimstone">Brimstone</option>
-              <option value="Chamber">Chamber</option>
-              <option value="Cypher">Cypher</option>
-              <option value="Deadlock">Deadlock</option>
-              <option value="Fade">Fade</option>
-              <option value="Gekko">Gekko</option>
-              <option value="Harbor">Harbor</option>
-              <option value="Iso">Iso</option>
-              <option value="Jett">Jett</option>
-              <option value="KAY/O">KAY/O</option>
-              <option value="Killjoy">Killjoy</option>
-              <option value="Neon">Neon</option>
-              <option value="Omen">Omen</option>
-              <option value="Phoenix">Phoenix</option>
-              <option value="Raze">Raze</option>
-              <option value="Reyna">Reyna</option>
-              <option value="Sage">Sage</option>
-              <option value="Skye">Skye</option>
-              <option value="Sova">Sova</option>
-              <option value="Viper">Viper</option>
-              <option value="Yoru">Yoru</option>
+              <option value="Choose an agent">Choose an agent</option>
             </select>
           </div>`)
 
+          agentArrayNames.forEach((name) => {
+            document.querySelector("#agent-select").insertAdjacentHTML("beforeend",
+            `<option value="${name}">${name}</option>`)
+          })
+
           document.querySelector("#agent-select").addEventListener("change", function() {
-            // console.log(randomNumber);
             checkAnswer(document.querySelector("#agent-select").value, "agent", randomNumber);
           });
 
@@ -282,7 +268,7 @@ async function getData() {
           `<div class="submitField" id="abilitySubmitField">
             <label for="ability-select">Which ability is this?</label>
             <select name="abilities" id="ability-select">
-              <option value="">Choose an ability</option>
+              <option value="Choose an ability">Choose an ability</option>
               <option value ="${agent.abilities[0].displayName}">${agent.abilities[0].displayName}</option>
               <option value ="${agent.abilities[1].displayName}">${agent.abilities[1].displayName}</option>
               <option value ="${agent.abilities[2].displayName}">${agent.abilities[2].displayName}</option>
@@ -295,32 +281,22 @@ async function getData() {
           });
           
         } else if (type == "weapon") {
+          let weaponArrayNames = [];
+          weaponArray.forEach((weapon) => weaponArrayNames.push(weapon.displayName));
+          weaponArrayNames.sort();
 
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="submitField">
             <label for="weapon-select">Which weapon is this?</label>
             <select name="weapons" id="weapon-select">
-              <option value="">Choose a weapon</option>
-              <option value ="Melee">Melee</option>
-              <option value ="Classic">Classic</option>
-              <option value ="Shorty">Shorty</option>
-              <option value ="Frenzy">Frenzy</option>
-              <option value ="Ghost">Ghost</option>
-              <option value ="Sheriff">Sheriff</option>
-              <option value ="Stinger">Stinger</option>
-              <option value ="Spectre">Spectre</option>
-              <option value ="Bucky">Bucky</option>
-              <option value ="Judge">Judge</option>
-              <option value ="Bulldog">Bulldog</option>
-              <option value ="Guardian">Guardian</option>
-              <option value ="Phantom">Phantom</option>
-              <option value ="Vandal">Vandal</option>
-              <option value ="Marshal">Marshal</option>
-              <option value ="Operator">Operator</option>
-              <option value ="Ares">Ares</option>
-              <option value ="Odin">Odin</option>
+              <option value="Choose a weapon">Choose a weapon</option>
             </select>
           </div>`)
+
+          weaponArrayNames.forEach((name) => {
+            document.querySelector("#weapon-select").insertAdjacentHTML("beforeend",
+            `<option value="${name}">${name}</option>`)
+          })
 
           document.querySelector("#weapon-select").addEventListener("change", function() {
             checkAnswer(document.querySelector("#weapon-select").value, "weapon");
@@ -335,7 +311,7 @@ async function getData() {
     }
 
   } catch (error) {
-    document.querySelector(".content").textContent = error;
+    document.querySelector(".content").textContent = `There was an error, please try again! (${error})`;
   }
 }; 
 
