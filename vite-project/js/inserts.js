@@ -127,7 +127,6 @@ async function getData() {
               document.querySelector(".submitField").remove();
               insertDropdown("ability");
             } else {
-              document.body.classList.add("win");
               DOMSelectors.box.innerHTML = "";
               DOMSelectors.box.insertAdjacentHTML("beforeend",
               `<div class="win">
@@ -136,14 +135,12 @@ async function getData() {
               </div>`)
               scoreCounter(1);
               document.querySelector(".playButton").addEventListener("click", function() {
-                document.body.classList.remove("win");
                 DOMSelectors.box.innerHTML = "";
                 getData();
               });
             }
             
           } else {
-            document.body.classList.add("lose");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="lose">
@@ -152,7 +149,6 @@ async function getData() {
             </div>`)
             scoreCounter(0);
             document.querySelector(".playButton").addEventListener("click", function() {
-              document.body.classList.remove("lose");
               DOMSelectors.box.innerHTML = "";
               insertTitle();
               document.querySelector(".playButton").addEventListener("click", function() {
@@ -165,7 +161,6 @@ async function getData() {
         } else if (type == "ability") {
           if (value == agentAbility.displayName) {
             // console.log(value);
-            document.body.classList.add("win");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="win">
@@ -174,13 +169,11 @@ async function getData() {
             </div>`)
             scoreCounter(2);
             document.querySelector(".playButton").addEventListener("click", function() {
-              document.body.classList.remove("win");
               DOMSelectors.box.innerHTML = "";
               getData();
             });
             
           } else {
-            document.body.classList.add("lose");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="lose">
@@ -189,7 +182,6 @@ async function getData() {
             </div>`)
             scoreCounter(0);
             document.querySelector(".playButton").addEventListener("click", function() {
-              document.body.classList.remove("lose");
               DOMSelectors.box.innerHTML = "";
               insertTitle();
               document.querySelector(".playButton").addEventListener("click", function() {
@@ -201,7 +193,6 @@ async function getData() {
         } else if (type == "weapon") {
           if (value == weapon.displayName) {
             // console.log(value);
-            document.body.classList.add("win");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="win">
@@ -210,13 +201,11 @@ async function getData() {
             </div>`)
             scoreCounter(1);
             document.querySelector(".playButton").addEventListener("click", function() {
-              document.body.classList.remove("win");
               DOMSelectors.box.innerHTML = "";
               getData();
             });
             
           } else {
-            document.body.classList.add("lose");
             DOMSelectors.box.innerHTML = "";
             DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="lose">
@@ -225,7 +214,6 @@ async function getData() {
             </div>`)
             scoreCounter(0);
             document.querySelector(".playButton").addEventListener("click", function() {
-              document.body.classList.remove("lose");
               DOMSelectors.box.innerHTML = "";
               insertTitle();
               document.querySelector(".playButton").addEventListener("click", function() {
