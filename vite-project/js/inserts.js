@@ -25,14 +25,12 @@ async function getData() {
       const agentArray = data.data.filter((agent) => agent.isPlayableCharacter == true);
       const agent = agentArray[getRandomInt(0, agentArray.length)];
       const filteredAgentAbility = agent.abilities.filter((ability) => ability.slot != "Passive");
-      const agentAbility = filteredAgentAbility[getRandomInt(0, agent.abilities.length)];
+      const agentAbility = filteredAgentAbility[getRandomInt(0, filteredAgentAbility.length)];
 
       const weaponArray = weaponData.data;
       const weapon = weaponArray[getRandomInt(0, weaponArray.length)];
 
       function insertRandomCard (randomNumber) {
-        console.log(agent);
-        console.log(weapon);
         
         if (randomNumber == 0) {
           // agent description
@@ -311,7 +309,19 @@ async function getData() {
     }
 
   } catch (error) {
-    document.querySelector(".content").textContent = `There was an error, please try again! (${error})`;
+    document.body.classList.add("retry");
+    DOMSelectors.box.innerHTML = "";
+    DOMSelectors.box.insertAdjacentHTML("beforeend",
+              `<div class="retry">
+                <h1 id="retry-title">Sorry!</h1>
+                <h2>There was an error, please try again!</h2>
+                <button type="submit" class="playButton">RETRY</button>
+              </div>`)
+    document.querySelector(".playButton").addEventListener("click", function() {
+      document.body.classList.remove("retry");
+      DOMSelectors.box.innerHTML = "";
+      getData();
+    });
   }
 }; 
 

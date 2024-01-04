@@ -8,6 +8,7 @@
     --redTransp: rgba(255, 87, 87, 0.192);
     --green: rgb(126, 255, 87);
     --greenTransp: rgba(126, 255, 87, 0.192);
+    --yellowTransp: rgba(255, 238, 87, 0.192);
     --yellow: #ffe15c;
     --yellow2: #ffe72e;
     --yellow3: #fff200;
@@ -34,6 +35,17 @@
 
 .lose {
     background-color: var(--redTransp);
+    border-radius: 100px;
+    padding: 100px;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.retry {
+    background-color: var(--yellowTransp);
     border-radius: 100px;
     padding: 100px;
     display: flex;
