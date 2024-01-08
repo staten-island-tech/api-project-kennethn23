@@ -93,27 +93,39 @@ body {
     color: black;
 }
 
-#app {
+.all {
     display: flex;
     flex-direction: column;
-    margin: auto;
     align-items: center;
+    justify-content: center;
+    margin: auto;
 }
 
 .content {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    width: 60%;
     text-align: center;
     align-items: center;
 }
 
-.title {
+#agent,
+#agentability {
     display: flex;
-    margin: auto;
     flex-direction: column;
+    text-align: center;
     align-items: center;
+}
+
+.sample {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 100px;
+    background-color: var(--content);
+    padding: 30px;
+    border-radius: 100px;
+    width: 110%;
 }
 
 .playButton {

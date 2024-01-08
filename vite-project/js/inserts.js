@@ -30,11 +30,17 @@ async function getData() {
       const weaponArray = weaponData.data;
       const weapon = weaponArray[getRandomInt(0, weaponArray.length)];
 
+      const agentDescription = agent.description.replace(agent.displayName, "_");
+      const agentAbilityDescription = agentAbility.description.replace(agent.displayName, "_");
+      const agentAbilityIcon = agentAbility.displayIcon;
+      const agentAbilityName = agentAbility.displayName;
+      const weaponIcon = weapon.displayIcon;
+      const weaponName = weapon.displayName;
+
       function insertRandomCard (randomNumber) {
         
         if (randomNumber == 0) {
           // agent description
-          const agentDescription = agent.description.replace(agent.displayName, "_");
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="card">
             <h1 id="card-title">Name this agent using their description!</h1>
@@ -44,7 +50,6 @@ async function getData() {
 
         } else if (randomNumber == 1) {
           // ability description
-          const agentAbilityDescription = agentAbility.description.replace(agent.displayName, "_");
           DOMSelectors.box.insertAdjacentHTML("beforeend",
           `<div class="card">
             <h1 id="card-title">Name this agent using one of their ability's descriptions!</h1>
@@ -54,8 +59,6 @@ async function getData() {
 
         } else if (randomNumber == 2) {
           // ability icon
-          const agentAbilityIcon = agentAbility.displayIcon;
-          const agentAbilityName = agentAbility.displayName;
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's icons!</h1>
@@ -65,7 +68,6 @@ async function getData() {
 
         } else if (randomNumber == 3) {
           // ability name
-          const agentAbilityName = agentAbility.displayName;
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this agent using one of their ability's names!</h1>
@@ -75,8 +77,6 @@ async function getData() {
 
         } else if (randomNumber == 4) {
           // ability name
-          const weaponIcon = weapon.displayIcon;
-          const weaponName = weapon.displayName;
           DOMSelectors.box.insertAdjacentHTML("beforeend",
             `<div class="card">
               <h1 id="card-title">Name this weapon using its icon!</h1>
@@ -292,6 +292,7 @@ async function getData() {
       }
       
       // insertRandomCard(1);
+      DOMSelectors.sample.remove();
       insertRandomCard(getRandomInt(0, 5));
 
     }
@@ -323,4 +324,54 @@ function insertTitle () {
   `)
 };
 
-export { insertTitle, getData };
+async function insertSampleCards() {
+  const url = `https://valorant-api.com/v1/agents`;
+  const weaponURL = `https://valorant-api.com/v1/weapons`;
+  try {
+    const response = await fetch(url);
+    const weaponResponse = await fetch(weaponURL);
+    if (response.status < 200 || response.status > 299 || weaponResponse.status < 200 || weaponResponse.status > 299) {
+      throw new Error(response.statusText);
+
+    } else {
+      const data = await response.json();
+      const weaponData = await weaponResponse.json();
+
+      const agentArray = data.data.filter((agent) => agent.isPlayableCharacter == true);
+      const agent = agentArray[getRandomInt(0, agentArray.length)];
+      const filteredAgentAbility = agent.abilities.filter((ability) => ability.slot != "Passive");
+      const agentAbility = filteredAgentAbility[getRandomInt(0, filteredAgentAbility.length)];
+      
+      const agentAbilityIcon = agentAbility.displayIcon;
+      const agentAbilityName = agentAbility.displayName;
+
+      DOMSelectors.sample.insertAdjacentHTML("beforeend", 
+      `<div id="agent">
+        <h3>${agent.displayName}</h3>
+        <img src="${agent.displayIconSmall}" alt="${agent.displayName}">
+      </div>
+      <div id="agentability">
+        <h3>${agentAbilityName}</h3>
+        <img src="${agentAbilityIcon}" alt="${agentAbilityName}">
+      </div>`)
+  }
+  }
+
+  catch (error) {
+    document.body.classList.add("retry");
+    DOMSelectors.box.innerHTML = "";
+    DOMSelectors.box.insertAdjacentHTML("beforeend",
+              `<div class="retry">
+                <h1 id="retry-title">Sorry!</h1>
+                <h2>There was an error, please try again!</h2>
+                <button type="submit" class="playButton">RETRY</button>
+              </div>`)
+    document.querySelector(".playButton").addEventListener("click", function() {
+      document.body.classList.remove("retry");
+      DOMSelectors.box.innerHTML = "";
+      getData();
+    });
+  }
+}
+
+export { insertTitle, getData, insertSampleCards };
